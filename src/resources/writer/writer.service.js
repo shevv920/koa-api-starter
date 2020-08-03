@@ -22,7 +22,7 @@ service.getWriterById = async (_id) => {
 }
 
 service.updateWriter = async (_id, newData) => {
-  return service.update({ _id }, (oldData) => {
+  return service.atomic.update({ _id }, (oldData) => {
     return { ...oldData, ...newData };
   });
 };
@@ -61,8 +61,5 @@ service.listing = async ({ pageNumber, documentsInPage, sortBy, sortOrder }) => 
     });
 };
 
-service.truncate = async () => {
-  return service.remove({});
-}
 
 module.exports = service;
