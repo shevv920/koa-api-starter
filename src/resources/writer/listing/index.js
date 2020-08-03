@@ -9,8 +9,8 @@ const schema = Joi.object({
     .min(1)
     .max(5)
     .precision(0),
-  sortBy: Joi.string().pattern(/^(firstName|lastName|_id|createdOn)$/).default('_id'),
-  sortOrder: Joi.string().pattern(/^(desc|asc)$/),
+  sortBy: Joi.any().valid('firstName','lastName','_id', 'createdOn').default('_id'),
+  sortOrder: Joi.any().valid('desc', 'asc'),
 });
 
 async function handler(ctx) {

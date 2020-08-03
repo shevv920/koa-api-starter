@@ -10,7 +10,7 @@ const schema = Joi.object({
     Joi.object({
       _id: Joi.string(),
       title: Joi.string(),
-      genre: Joi.string().pattern(/^novel|poem$/),
+      genre: Joi.any().valid('novel', 'poem'),
     })
   ),
 });

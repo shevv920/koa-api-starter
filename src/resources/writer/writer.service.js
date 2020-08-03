@@ -61,10 +61,6 @@ service.listing = async ({ pageNumber, documentsInPage, sortBy, sortOrder }) => 
     });
 };
 
-service.getAll = async () => {
-  return service.find({});
-}
-
 service.truncate = async () => {
   return service.remove({});
 }

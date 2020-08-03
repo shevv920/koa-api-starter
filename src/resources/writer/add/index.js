@@ -18,8 +18,7 @@ const schema = Joi.object({
     books: Joi.array().items(
       Joi.object({
         title: Joi.string(),
-        genre: Joi.string()
-          .pattern(/^novel|poem$/)
+        genre: Joi.any.valid('novel', 'poem')
           .message('genre must be on of "novel, poem"'),
       })
     ),

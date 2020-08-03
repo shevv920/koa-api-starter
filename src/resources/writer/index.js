@@ -10,6 +10,5 @@ require('./books/replace').register(router);
 require('./delete').register(router);
 require('./update').register(router);
 require('./listing').register(router);
-require('./truncate').register(router);
 
 module.exports = router.routes();
