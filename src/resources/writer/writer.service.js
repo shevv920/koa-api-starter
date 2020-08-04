@@ -22,8 +22,10 @@ service.getWriterById = async (_id) => {
 }
 
 service.updateWriter = async (_id, newData) => {
-  return service.atomic.update({ _id }, (oldData) => {
-    return { ...oldData, ...newData };
+  return service.atomic.update({ _id }, {
+    $set: {
+      ...newData
+    },
   });
 };
 
@@ -32,10 +34,14 @@ service.deleteWriter = async (_id) => {
 };
 
 service.addWriterBooks = async (_id, books) => {
-  return service.update({ _id }, (writer) => {
-    const booksToAdd = books.map(addId);
-    return { ...writer, books: [...writer.books, ...booksToAdd] };
-  });
+  const booksToAdd = books.map(addId);
+
+  return service.atomic.update({ _id }, {
+    $push: {
+      books: booksToAdd
+    },
+  },
+  );
 };
 
 service.deleteWriterBook = async (_id, bookId) => {
