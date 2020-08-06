@@ -23,9 +23,7 @@ service.getWriterById = async (_id) => {
 
 service.updateWriter = async (_id, newData) => {
   return service.atomic.update({ _id }, {
-    $set: {
-      ...newData
-    },
+    $set: newData,
   });
 };
 
