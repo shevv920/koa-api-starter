@@ -3,7 +3,7 @@ const validate = require('middlewares/validate');
 const writerService = require('resources/writer/writer.service');
 
 const schema = Joi.object({
-  writer: {
+  writer: Joi.object({
     firstName: Joi.string()
       .trim()
       .messages({
@@ -21,8 +21,8 @@ const schema = Joi.object({
         genre: Joi.any().valid('novel', 'poem'),
       })
     ),
-  }
-});
+  }).required()
+}).required();
 
 async function existsValidator(ctx, next) {
   const { writer } = ctx.validatedData;

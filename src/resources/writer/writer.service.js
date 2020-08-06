@@ -37,23 +37,23 @@ service.addWriterBooks = async (_id, books) => {
   const booksToAdd = books.map(addId);
 
   return service.atomic.update({ _id }, {
-    $push: {
-      books: booksToAdd
+    $addToSet: {
+      books: { $each: booksToAdd }
     },
   },
   );
 };
 
 service.deleteWriterBook = async (_id, bookId) => {
-  return service.update({ _id }, (writer) => {
-    return { ...writer, books: writer.books.filter((b) => b._id !== bookId) };
-  });
+  return service.atomic.update({ _id },
+    { $pull: { books: { _id: bookId, title: "Memes", genre: "novel" } } },
+  );
 };
 
 service.replaceWriterBooks = async (_id, books) => {
-  return service.update({ _id }, (writer) => {
-    const booksToAdd = books.map(addId);
-    return { ...writer, books: booksToAdd };
+  const booksToAdd = books.map(addId);
+  return service.atomic.update({ _id }, {
+    $set: { books: booksToAdd }
   });
 };
 
