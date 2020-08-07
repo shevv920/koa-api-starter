@@ -16,4 +16,7 @@ module.exports = {
     DEFAULT_RESET_PASSWORD_TOKEN: 'reset_password_token',
     PRIVATE_FIELDS: ['passwordHash', 'signupToken', 'resetPasswordToken'],
   },
+  WRITER: {
+    COLLECTION: 'writers',
+  },
 };

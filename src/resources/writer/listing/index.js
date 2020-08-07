@@ -9,7 +9,7 @@ const schema = Joi.object({
     .min(1)
     .max(5)
     .precision(0),
-  sortBy: Joi.any().valid('firstName','lastName','_id', 'createdOn').default('_id'),
+  sortBy: Joi.any().valid('firstName', 'lastName', '_id', 'createdOn').default('_id'),
   sortOrder: Joi.any().valid('desc', 'asc'),
 });
 

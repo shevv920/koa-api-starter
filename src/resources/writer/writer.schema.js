@@ -11,7 +11,7 @@ const schema = Joi.object({
       _id: Joi.string(),
       title: Joi.string(),
       genre: Joi.any().valid('novel', 'poem'),
-    })
+    }),
   ),
 });
 
