@@ -44,7 +44,7 @@ service.addWriterBooks = async (_id, books) => {
 
 service.deleteWriterBook = async (_id, bookId) => {
   return service.atomic.update({ _id },
-    { $pull: { books: { _id: bookId, title: "Memes", genre: "novel" } } },
+    { $pull: { books: { _id: bookId } } },
   );
 };
 
