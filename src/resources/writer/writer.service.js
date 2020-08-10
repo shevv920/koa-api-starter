@@ -14,6 +14,7 @@ service.createWriter = async (writer) => {
   const writerToCreate = {
     ...writer,
     books: writer.books.map(addId),
+    _id: service.generateId(),
   };
   return service.create(writerToCreate);
 };

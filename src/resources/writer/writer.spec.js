@@ -22,15 +22,25 @@ const VALID_WRITER = {
   ],
 };
 
-const expectResponseData = (response) => {
+const OMIT_FIELDS = ['_id', 'createdOn', 'updatedOn'];
+
+const expectResponse = (response, dataProperty = 'data') => {
   expect(response).to.have.property('body');
-  expect(response.body).to.have.property('data');
-  const { data } = response.body;
-  return data;
+  expect(response.body).to.have.property(dataProperty);
+  return response.body[dataProperty];
+};
+
+const omitWriterFields = (writer) => {
+  const idOmitted = {
+    ...omit(writer, ...OMIT_FIELDS),
+    books: writer.books.map((b) => omit(b, '_id')),
+  };
+  return idOmitted;
 };
 
 describe('/writer', async () => {
   const writerRequest = supertest.agent(app);
+  let writerId = '';
 
   before(async () => {
     await db.get(WRITER.COLLECTION).drop();
@@ -38,9 +48,7 @@ describe('/writer', async () => {
 
   it('Should return empty writer\'s collection', async () => {
     const response = await writerRequest.get('/writer').expect(200);
-    expect(response).to.have.property('body');
-    expect(response.body).to.have.property('data');
-    const { data } = response.body;
+    const data = expectResponse(response);
     expect(data).to.deep.equal([]);
   });
 
@@ -59,20 +67,20 @@ describe('/writer', async () => {
       .expect(200);
     expect(response).to.have.property('body');
     const writer = response.body;
+    expect(writer).to.have.property('_id');
+    writerId = writer._id;
     expect(writer).to.have.property('books');
-    const idOmitted = {
-      ...omit(writer, '_id'),
-      books: writer.books.map((b) => omit(b, '_id')),
-    };
+    const idOmitted = omitWriterFields(writer);
     expect(idOmitted).to.deep.equal(VALID_WRITER);
   });
 
-  it('Should return results with recently created writer', async () => {
+  it('Should find recently created writer', async () => {
     const response = await writerRequest
-      .get('/writer')
+      .get(`/writer/${writerId}`)
       .expect(200);
-    const data = expectResponseData(response);
-
-    console.log(data);
+    const results = expectResponse(response, 'results');
+    expect(results).to.lengthOf(1);
+    const [writer] = results;
+    expect(omitWriterFields(writer)).to.deep.equal(VALID_WRITER);
   });
 });
