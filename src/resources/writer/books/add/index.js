@@ -8,7 +8,7 @@ const schema = Joi.object({
     Joi.object({
       title: Joi.string(),
       genre: Joi.any().valid('novel', 'poem'),
-    })
+    }),
   ).required(),
 }).required();
 

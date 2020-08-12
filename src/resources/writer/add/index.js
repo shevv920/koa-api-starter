@@ -19,17 +19,17 @@ const schema = Joi.object({
       Joi.object({
         title: Joi.string(),
         genre: Joi.any().valid('novel', 'poem'),
-      })
+      }),
     ),
-  }).required()
+  }).required(),
 }).required();
 
 async function existsValidator(ctx, next) {
   const { writer } = ctx.validatedData;
 
   const writerExists = await writerService.exists({
-    "firstName": writer.firstName,
-    "lastName": writer.lastName,
+    firstName: writer.firstName,
+    lastName: writer.lastName,
   });
 
   if (writerExists) {
